@@ -16,7 +16,7 @@ def task_2(operator):
 
     while True:
         if operator in lst:
-            print("correct")
+            # print("correct")
             break
         else:
             print("Помилка при введені оператора, введіть ще раз")
