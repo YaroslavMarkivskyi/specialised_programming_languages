@@ -140,17 +140,29 @@ class ArtGenerator:
             self.create()
             file.write(self._ascii_art)
 
+    def _create(self, **kwargs):
+        if 'font' in kwargs:
+            font = kwargs['font']
+        else:
+            font = self._font
+        return pyfiglet.Figlet(font=font, direction=self._direction, justify=self._justify, width=self._width)
+
     def create(self):
         try:
-            art = pyfiglet.Figlet(font=self._font, direction=self._direction, justify=self._justify, width=self._width)
+            art = self._create()
             self._ascii_art = art.renderText(self._message)
 
         except NameError as e:
             raise NameError(f"Error: {e}")
 
     def prev_view(self):
-        art = pyfiglet.Figlet(font=self._font, direction=self._direction, justify=self._justify, width=self._width)
+        art = self._create()
         art = (self._color + art.renderText(self._message))
+        return art
+
+    def _art_zoom(self):
+        art = self._create(font='banner3')
+        art = art.renderText(self._message)
         return art
 
     def zoom(self):
@@ -159,8 +171,7 @@ class ArtGenerator:
         len_line = 0
         len_lines = 0
         mx = 0
-        art = pyfiglet.Figlet(font='banner3', direction=self._direction, justify=self._justify, width=self._width)
-        art = art.renderText(self._message)
+        art = self._art_zoom()
 
         for i in art:
 
@@ -195,54 +206,3 @@ class ArtGenerator:
 
     def __str__(self):
         return self._color + self._ascii_art
-
-
-# art = pyfiglet.Figlet(font='banner3', width=100)
-# art = art.renderText("Markivskyi")
-# h = 10
-# w = 60
-#
-# print(art)
-# line = ''
-# lines = []
-# len_line = 0
-# len_lines = 0
-# mx = 0
-#
-# for i in art:
-#
-#     if i != '\n':
-#         line += i
-#         mx += 1
-#     else:
-#         if len_line < mx:
-#             len_line = mx
-#         mx = 0
-#         lines += [line]
-#
-#         line = ''
-# len_lines = lines.__len__()
-# square_base = len_lines * len_line
-# square_update = h * w
-#
-#
-# if square_update >= square_base:
-#     pw = round(square_update / square_base)
-# else:
-#     pw = round(square_base / square_update)
-# new_lines = []
-# for line in lines:
-#     new_line = ''
-#     for l in line:
-#         new_line += l
-#         new_line += l
-#     new_lines += [new_line] * 2
-#     # ln = '' * new_line.__len__()
-#     # new_lines += [ln]
-# laq = ''
-# for line in new_lines:
-#     laq += line + '\n'
-#     # print(line)
-#
-# print(laq)
-# print('|___/\___|_|_|(_)___|_| |_| |_|\___||___/___/\__,_|\__, |\___|'.__len__())
