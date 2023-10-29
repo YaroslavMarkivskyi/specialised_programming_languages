@@ -9,15 +9,15 @@ class BaseCalculator:
     _num_2 = None
     _result = None
 
-    def __int__(self, number_1, symbol, numer_2):
-        self._number_validate(number_1)
-        self._num_1 = number_1
-
-        self._number_validate(numer_2)
-        self._num_2 = numer_2
-
-        self._operator_validate(symbol)
-        self._operator = symbol
+    def __init__(self, **kwargs):
+        if 'num_1' in kwargs:
+            self.num_1 = kwargs['num_1']
+        if 'num_2' in kwargs:
+            self.num_2 = kwargs['num_2']
+        if 'operator' in kwargs:
+            self.operator = kwargs['operator']
+        if 'custom_round' in kwargs:
+            self.custom_round = kwargs['custom_round']
 
     # Number Validate
     @classmethod
@@ -26,13 +26,13 @@ class BaseCalculator:
             num = float(num)
             return num
         except ValueError:
-            raise ValueError("Parameter is not number")
+            raise ValueError(f"Parameter '{num}' is not number")
 
     # Operator Validate
     @classmethod
     def _operator_validate(cls, symbol):
         if symbol not in cls._LIST_OPERATORS:
-            raise TypeError("Operator is not in ('+', '-', '*', '/')!")
+            raise TypeError(f"Operator is not in {cls._LIST_OPERATORS}!")
         else:
             return symbol
 
@@ -89,6 +89,7 @@ class BaseCalculator:
 
     # Function
     def __str__(self):
+        self.calc()
         if self._operator == '√':
             return f"{self._operator} {self._num_1} = {self._result}"
         else:
